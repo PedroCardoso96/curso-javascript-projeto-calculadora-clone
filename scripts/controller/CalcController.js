@@ -44,7 +44,7 @@ class CalcController {
     }
 
     setLastOperation(value){
-        this._operation[this._operation.length-1] = value;
+       return this._operation[this._operation.length-1] = value;
     }
 
     isOperator(value){
@@ -122,9 +122,9 @@ class CalcController {
             } else {
 
                 let newValue = this.getLastOperation().toString() + value.toString();
-            this.setLastOperation(parseInt(newValue));
+                this.setLastOperation(parseInt(newValue));
 
-            this.setLastNumberToDisplay();
+                this.setLastNumberToDisplay();
 
             }
 
