@@ -15,7 +15,7 @@ class CalcController {
     }
 
     initialize(){
-
+ 
         this.setDisplayDateTime();
         
         setInterval(()=>{
@@ -24,6 +24,8 @@ class CalcController {
 
 
         }, 1000);
+
+        this.setLastNumberToDisplay();
     }
 
     addEventListenerAll(element, events, fn){
@@ -143,11 +145,7 @@ class CalcController {
             if (this.isOperator(this._operation[i])) {
                 lastItem = this._operation[i];
                 break;
-            
-
             }
-
-            
 
         }
 
