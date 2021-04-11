@@ -4,7 +4,7 @@ class CalcController {
         this._audio = new Audio('click.mp3');
         this._audioOnOff = false;
         this._lastOperator = '';
-        this.lastNumber = '';
+        this._lastNumber = '';
 
         this._operation = [];
         this._locale = 'pt-BR';
@@ -19,7 +19,7 @@ class CalcController {
 
 
     pasteFromClipboard(){
-        document.addEventListener('paste', e=>{
+        document.addEventListener('paste', e=> {
 
             let text = e.clipboardData.getData('Text');
 
@@ -49,7 +49,7 @@ class CalcController {
  
         this.setDisplayDateTime();
         
-        setInterval(()=>{
+        setInterval(() => {
 
             this.setDisplayDateTime();
 
@@ -59,9 +59,10 @@ class CalcController {
         this.setLastNumberToDisplay();
         this.pasteFromClipboard();
 
-        document.querySelectorAll('btn-ac').forEach(btn=>{
+        document.querySelectorAll('.btn-ac').forEach(btn => {
 
-            btn.addEventListener('dblClick', e=>{
+            btn.addEventListener('dblclick', e => {
+
                 this.toggleAudio();
             })
         })
@@ -85,9 +86,9 @@ class CalcController {
 
     initKeyboard(){
 
-        document.addEventListener('keyup', e=>{
+        document.addEventListener('keyup', e => {
 
-            this._audio.play();
+            this.playAudio();
 
             switch (e.key){
 
@@ -109,7 +110,7 @@ class CalcController {
 
                 case '.':
                 case ',':
-                    this.addOperation('.');
+                    this.addDot();
                     break;
     
                 case '=':
@@ -135,7 +136,7 @@ class CalcController {
                     break;
             }
 
-        })
+        });
     }
 
     addEventListenerAll(element, events, fn){
@@ -161,11 +162,11 @@ class CalcController {
     
 
     getLastOperation(){
-       return this._operation[this._operation.length-1];
+       return this._operation[this._operation.length - 1];
     }
 
     setLastOperation(value){
-       return this._operation[this._operation.length-1] = value;
+       return this._operation[this._operation.length - 1] = value;
     }
 
     isOperator(value){
@@ -193,9 +194,7 @@ class CalcController {
         try {
             return eval(this._operation.join(""));
         } catch(e){
-            setTimeout(()=>{
-                this.setError();
-            }, 1);
+            setTimeout(() => this.setError(), 1);
         }
     }
 
@@ -211,29 +210,25 @@ class CalcController {
         if (this._operation.length < 3){
 
             let firstItem = this._operation[0];
-            this._operation = [firstItem, this._lastOperator, this.lastNumber];
+            this._operation = [firstItem, this._lastOperator, this._lastNumber];
         }
 
         if(this._operation.length > 3){
+
             last = this._operation.pop();
-
-
             this._lastNumber = this.getResult();
-        } else if(this._operation.length == 3){
+
+        } else if(this._operation.length === 3){
 
             
-            this._lastNumber = this.getResult(false);
+            this._lastNumber = this.getLastItem(false);
 
         }
-
-        console.log('_lastOperator', this._lastOperator);
-        console.log('_lastNumber', this._lastNumber);
-
 
         let result = this.getResult();
 
 
-        if(last == '%'){
+        if(last === '%'){
 
             result /= 100;
 
@@ -248,11 +243,9 @@ class CalcController {
 
         }
 
-        
-
-        this._operation = [result, last];
-
         this.setLastNumberToDisplay();
+
+
     }
 
 
@@ -262,7 +255,7 @@ class CalcController {
 
         for (let i = this._operation.length - 1; i >= 0; i--){
 
-            if (this.isOperator(this._operation[i])) {
+            if (this.isOperator(this._operation[i]) === isOperator) {
                 lastItem = this._operation[i];
                 break;
             }
@@ -293,14 +286,12 @@ class CalcController {
 
         
 
-        if(isNaN(this.getLastOperation())){
+        if(isNaN(this.getLastOperation())) {
 
             if (this.isOperator(value)){
 
                 this.setLastOperation(value);
 
-            } else if(isNaN(value)) {
-                
             } else {
                 this.pushOperation(value);
 
